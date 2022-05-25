@@ -32,4 +32,4 @@ api.add_resource(Group,
                  '/groups/<string:groupname>',
                  '/groups',endpoint='group')
 
-app.run(port=5000,debug=True)
+app.run(host='0.0.0.0',port=5000,debug=True)
