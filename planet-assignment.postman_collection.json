@@ -1,0 +1,202 @@
+{
+	"info": {
+		"_postman_id": "30c4d2dd-4c8c-4432-ad6b-cd42feab1433",
+		"name": "planet-assignment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Users By Userid",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "localhost:5000/users",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"first_name\": \"Daniel\",\r\n\"last_name\": \"Salinas\",\r\n\"userid\": \"dsal\",\r\n\"groups\": [\"users\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/users",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:5000/users/<userid>",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"users",
+						"<userid>"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Modify User",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"first_name\": \"Vinayak\",\r\n\"last_name\": \"Joshi\",\r\n\"userid\": \"vjos\",\r\n\"groups\": [\"grp2\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/users/vjos",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"users",
+						"vjos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Group",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"groupname\" : \"grp1\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/groups",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"groups"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Group Members",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n\"first_name\": \"Chai\",\r\n\"last_name\": \"Talp\",\r\n\"userid\": \"ctal\"\r\n  },\r\n   {\r\n\"first_name\": \"Ira\",\r\n\"last_name\": \"Talp\",\r\n\"userid\": \"ital\"\r\n  }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/groups/grp1",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"groups",
+						"grp1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Group Members",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/groups/grp1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"groups",
+						"grp1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Group",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:5000/groups/grp1",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"groups",
+						"grp1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
