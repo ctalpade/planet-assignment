@@ -30,9 +30,16 @@
  2) check the logs
  docker logs --follow planet_userapi_testcont
  
- 3) test the api
+ ============================================
+ Testing the container 
+ ============================================
+ 1) Test the api using testclient
  docker exec --env DBPATH=/app --env DBFILENAME=test.db -ti planet_userapi_testcont  sh -c "python client/testclient.py"
-  
+ 
+ 2) Test the api using Postman app.
+ You can also test the api using postman app by importing the postman collection json.
+ It will provide all the end points that can be tested for the API.
+ 
  ============================================
  Cleanup the container and image
  ============================================

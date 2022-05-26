@@ -65,4 +65,4 @@ class Group(Resource):
             result = GroupService.getGroupsAllInfo(groupname)
         else:
             result = GroupService.getAllGroups()
-        return {'grouplist': result }, 200 if result and any(result) else 404     
+        return {'grouplist': result }, 200 if result else 404     

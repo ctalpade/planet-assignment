@@ -65,7 +65,7 @@ class User(Resource):
         print('get User '+str(userid))
         user = UserService.getUserbyId(userid) if userid else []
         result = user if userid else UserService.getAllUsers()
-        return { 'userlist' : result }, 200 if result and any(result) else 404
+        return { 'userlist' : result }, 200 if result else 404
 
 
 
