@@ -11,7 +11,6 @@ app = Flask(__name__)
 
 api = Api(app)
 
-@app.before_first_request
 def initDb():
     import os
     if not os.path.exists(os.environ['DBPATH']+'/'+os.environ.get('DBFILENAME','test.db')):
@@ -21,6 +20,8 @@ def initDb():
         print('Completed..')
     else:
         print('Using existing db')  
+
+initDb()
 
 api.add_resource(User,
                  '/users/<string:userid>',
