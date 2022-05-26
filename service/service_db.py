@@ -108,10 +108,13 @@ class GroupService:
     @classmethod
     def deleteGroup(cls,groupname):
         with Session(engine) as s:
-            group = s.execute(select(Group).where(Group.groupname == groupname)).scalars().one()
+            group = s.execute(select(Group).where(Group.groupname == groupname)).scalars().one_or_none()
             print('group '+str(group))
-            s.delete(group)
-            s.commit()
+            if group:
+                s.delete(group)
+                s.commit()
+            else:
+                raise Exception('Group does not exist..')
     
     
     @classmethod

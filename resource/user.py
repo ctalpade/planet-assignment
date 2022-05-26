@@ -40,7 +40,7 @@ class User(Resource):
             UserService.deleteUser(userid)
         except Exception as e:
             statusmessage = str(e)
-            statuscode = 404
+            statuscode = 400
 
         return { 'status' : statusmessage },statuscode
  

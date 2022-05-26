@@ -48,8 +48,13 @@ class Group(Resource):
         #default values
         statusmessage = 'Group updated successfully.'
         statuscode = 200
-
-        GroupService.deleteGroup(groupname) #[ u for u in userlist if groupname in u['groups'] ]
+        try:
+            GroupService.deleteGroup(groupname)
+        except Exception as e:
+            statusmessage = str(e)
+            statuscode = 400
+            
+            
         
         return { 'status' : statusmessage },statuscode    
 
