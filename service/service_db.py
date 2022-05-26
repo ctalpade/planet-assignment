@@ -1,5 +1,3 @@
-
-from model.inmemory import *
 from model.allmodels import Group,User
 from sqlalchemy.orm import Session
 from sqlalchemy import select
@@ -71,7 +69,6 @@ class UserService:
                     raise Exception('Group does not exist. Please fix the data and try again '+str(g))
             
             conn.commit()
-        # update usergroup 
 
 
 class GroupService:
@@ -97,7 +94,7 @@ class GroupService:
     @classmethod
     def getAllGroups(cls,):
         s = Session(engine)
-        grouplist = s.execute(select(Group)).scalars().all()
+        grouplist = s.execute(select(Group).options(selectinload(Group.users))).scalars().all()
         return grouplist   
      
     @classmethod
@@ -119,13 +116,29 @@ class GroupService:
     
     @classmethod
     def modifyGroup(cls,groupname,usersInGroup,currentgrp):
-        
-        with Session(engine) as s:
-            group = s.execute(select(Group).where(Group.groupname == groupname)).scalars().one()
-            print('group '+str(group))
+        # update group
+        with engine.connect() as conn:
             for data in usersInGroup:
-                group.users.append(User(userid=data['userid'],first_name=data['first_name'],last_name=data['last_name']))
-    
-            s.add(group)
-            s.commit()
+                #if new user select * from user where userid = :userid 
+                result = conn.execute(text('select * from user where userid = :userid '),[{ 'userid' : data['userid'] }])
+                if not any(result):
+                    # insert into user , usergroup
+                    conn.execute(text('insert into user (userid,first_name,last_name) values (:userid,:first_name,:last_name)')
+                                 ,[{ 'userid' : data['userid'],'first_name' : data['first_name'],'last_name' : data['last_name'] }])
+                    conn.execute(text('insert into usergroup (userid,groupname) values (:userid,:groupname)')
+                                 ,[{ 'userid' : data['userid'],'groupname' : groupname }])
+                else:
+                    #if existing user 
+                    # if not mapped to group insert into usergroup
+                    result = conn.execute(text('select * from usergroup where groupname = :groupname and userid = :userid')
+                                 ,[{'userid': data['userid'],'groupname': groupname}])
+                     
+                    if not any(result):
+                        conn.execute(text('insert into usergroup (userid,groupname) values (:userid,:groupname)')
+                                     ,[{ 'userid' : data['userid'],'groupname' : groupname }])
+                        
+                     
+            conn.commit()
+
+        
             

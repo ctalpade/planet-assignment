@@ -1,28 +1,26 @@
-from flask import Flask,request,jsonify 
-from flask_restful import Resource,Api
-from flask_restful import fields, marshal_with 
-
+import os
+from flask import Flask 
+from flask_restful import Api
 from resource.user import User
 from resource.group import Group
 
+os.environ['DBPATH']=os.environ.get('DBPATH',os.path.dirname(__file__)) 
 
 app = Flask(__name__)
 
 
 api = Api(app)
 
-  
-
-'''
-{
-"first_name": "Joe",
-"last_name": "Smith",
-"userid": "jsmith",
-"groups": ["admins", "users"]
-}
-'''
-
-
+@app.before_first_request
+def initDb():
+    import os
+    if not os.path.exists(os.environ['DBPATH']+'/'+os.environ.get('DBFILENAME','test.db')):
+        from db import init
+        print('Initializing the db')
+        init()
+        print('Completed..')
+    else:
+        print('Using existing db')  
 
 api.add_resource(User,
                  '/users/<string:userid>',

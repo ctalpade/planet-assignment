@@ -1,16 +1,9 @@
-from flask import Flask,request
+from flask import request
 from flask_restful import Resource
 from flask_restful import marshal_with
 
-from resource.resources import * 
-
-useDB=True
-
-if useDB:
-    pass
-    from service.service_db import UserService
-else:
-    from service.service_inmemory import UserService
+from service.service_db import UserService
+from resource.resources_jsonify import *
 
 
 
@@ -19,7 +12,7 @@ class User(Resource):
     def post(self,name=None):
         #default values
         statusmessage = 'User successfully created.'
-        statuscode = 200
+        statuscode = 201
         
         data = request.get_json(force=True)
         print('Creating User '+str(data))
@@ -72,7 +65,7 @@ class User(Resource):
         print('get User '+str(userid))
         user = UserService.getUserbyId(userid) if userid else []
         result = user if userid else UserService.getAllUsers()
-        return { 'userlist' : result }, 200 if any(result) else 404
+        return { 'userlist' : result }, 200 if result and any(result) else 404
 
 
 

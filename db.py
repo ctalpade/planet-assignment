@@ -1,10 +1,10 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 
-Base = declarative_base()
-engine = create_engine("sqlite:///test.db", echo=True, future=True) 
+from constants import dburl
 
-import model.allmodels
+Base = declarative_base()
+engine = create_engine(dburl, echo=True, future=True) 
 
 def init():
     try:

@@ -1,15 +1,9 @@
-from flask import Flask,request
+from flask import request
 from flask_restful import Resource
-from flask_restful import fields, marshal_with
-from resource.resources import resource_fields_group
+from flask_restful import marshal_with
 
-useDB=True
-
-if useDB:
-    pass
-    from service.service_db import GroupService
-else:
-    from service.service_inmemory import GroupService
+from service.service_db import GroupService
+from resource.resources_jsonify import *
     
 
 
@@ -18,7 +12,7 @@ class Group(Resource):
     def post(self):
         #default values
         statusmessage = 'Group successfully created.'
-        statuscode = 200
+        statuscode = 201
         
         data = request.get_json(force=True)
         print('Creating Group '+str(data))
@@ -36,7 +30,7 @@ class Group(Resource):
     def put(self,groupname):
         #default values
         statusmessage = 'Group updated successfully.'
-        statuscode = 200
+        statuscode = 201
         print('Modify User '+str(groupname))
         usersInGroup = request.get_json(force=True)
         #check if duplicate user
@@ -49,13 +43,6 @@ class Group(Resource):
 
         return { 'status' : statusmessage },statuscode    
  
-    @marshal_with(resource_fields_group)
-    def get(self,groupname):
-        print('get Group '+str(groupname))
-        result = GroupService.getGroupsAllInfo(groupname)
-        return {'grouplist': result }, 200 if result else 404     
-
-
     def delete(self,groupname):
         print('Delete Group '+str(groupname))
         #default values
@@ -65,3 +52,12 @@ class Group(Resource):
         GroupService.deleteGroup(groupname) #[ u for u in userlist if groupname in u['groups'] ]
         
         return { 'status' : statusmessage },statuscode    
+
+    @marshal_with(resource_fields_group)
+    def get(self,groupname=None):
+        print('get Group '+str(groupname))
+        if groupname:
+            result = GroupService.getGroupsAllInfo(groupname)
+        else:
+            result = GroupService.getAllGroups()
+        return {'grouplist': result }, 200 if result and any(result) else 404     
